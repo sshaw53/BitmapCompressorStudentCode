@@ -1,9 +1,10 @@
-Name: YOUR NAME HERE
+Name: SIERRA SHAW
 
-| Date    |  Time  |                                     Update |
-|:--------|:------:|-------------------------------------------:|
-| April 5 | 9-10pm | I tried to write abstract, efficient code. |
-|         |        |                                            |
+| Date   |    Time    |                                                                                                                                                                                                                                                                                                                                                                          Update |
+|:-------|:----------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| Nov 15 |  2:15-3pm  | The idea I currently am working through is writing out the number of repeats of a given 0 or 1 into the compressed file to save space. I'm trying to figure out how to minimize space, so I'm thinking of looping through the data initially to look for the longest instance and make sure that the radix representation of that uses minimal bytes for the rest of the cases. |
+| Nov 17 | 12-12:45pm |                                                                                                                             I was working on coding the implementation of my idea but I've had some hiccups on the way... I don't think me finding my radix is working correctly. Maybe I should be using 32 bits in general rather than trying to modify it for every program. |
+|        |            |                                                                                                                                                                                                                                                                                                                                                                                 |
 
 
 To add a new row to the table, click into a cell and then hit shift-enter.
