@@ -40,7 +40,7 @@ public class BitmapCompressor {
         }
         int dataSize = data.size();
         // See how many switches for 0 to 1
-        int switches = 0;
+        int switches = 1;
         int max_reps = 0;
         int current = data.get(0);
         int current_reps = 0;
@@ -88,6 +88,8 @@ public class BitmapCompressor {
                 current_reps += 1;
             }
         }
+        // Print out the last section
+        BinaryStdOut.write(current_reps, radix);
 
         BinaryStdOut.close();
     }
