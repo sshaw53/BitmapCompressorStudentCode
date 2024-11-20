@@ -16,6 +16,8 @@
  *  1240 bits
  ******************************************************************************/
 
+import java.util.ArrayList;
+
 /**
  *  The {@code BitmapCompressor} class provides static methods for compressing
  *  and expanding a binary bitmap input.
@@ -32,44 +34,54 @@ public class BitmapCompressor {
      * and writes the results to standard output.
      */
     public static void compress() {
-        String str = BinaryStdIn.readString();
-        int strlen = str.length();
+        ArrayList<Integer> data = new ArrayList<Integer>();
+        while (!BinaryStdIn.isEmpty()) {
+            data.add(BinaryStdIn.readInt(1));
+        }
+        int dataSize = data.size();
+        // See how many switches for 0 to 1
+        int switches = 0;
         int max_reps = 0;
-        char current = str.charAt(0);
+        int current = data.get(0);
         int current_reps = 0;
 
-        // Add in the MetaData how long the String is
-        BinaryStdOut.write(strlen);
+        // Metadata
 
         // Add at first whether it starts at a 0 or 1 (1 bit)
         BinaryStdOut.write(current, 1);
 
         // Loop through String to see the longest instance of a 1 or a 0
-        for (int i = 0; i < strlen; i++) {
-            if (str.charAt(i) != current) {
+        for (int i = 0; i < dataSize; i++) {
+            if (data.get(i) != current) {
                 if (current_reps > max_reps) {
                     max_reps = current_reps;
                 }
                 current_reps = 1;
+                current = data.get(i);
+                switches += 1;
             }
             else {
-                current += 1;
+                current_reps += 1;
             }
         }
+
+        // Add in the MetaData how long the String is
+        BinaryStdOut.write(switches);
 
         // Find radix (bits needed to represent max_reps)
         int radix = (int) (Math.log(max_reps) / Math.log(2)) + 1;
         BinaryStdOut.write(radix);
 
-        current = str.charAt(0);
+        current = data.get(0);
         current_reps = 0;
 
         // Use the radix needed for the longest instance to write in data of constant length of a set of characters
-        for (int i = 0; i < strlen; i++) {
+        for (int i = 0; i < dataSize; i++) {
             // Once the next one is the opposite, add the repeated instances number to the file in previously found radix
-            if (str.charAt(i) != current) {
+            if (data.get(i) != current) {
                 BinaryStdOut.write(current_reps, radix);
                 current_reps = 1;
+                current = data.get(i);
             }
             // Count how many repeated instances of that given number
             else {
@@ -85,20 +97,19 @@ public class BitmapCompressor {
      * and writes the results to standard output.
      */
     public static void expand() {
-
         // Get the MetaData
-        int strlen = BinaryStdIn.readInt();
-        char current_char = (char) BinaryStdIn.readInt(1);
+        int currentBit = BinaryStdIn.readInt(1);
+        int switches = BinaryStdIn.readInt();
         int radix = BinaryStdIn.readInt();
 
-        for (int i = 0; i < strlen; i++) {
+        for (int i = 0; i < switches; i++) {
             // Only read in X bits, then write the current char out that read amount times
             int reps = BinaryStdIn.readInt(radix);
             for (int j = 0; j < reps; j++) {
-                BinaryStdOut.write(current_char, radix);
+                BinaryStdOut.write(currentBit, 1);
             }
+            currentBit = (currentBit + 1) % 2;
         }
-
         BinaryStdOut.close();
     }
 
